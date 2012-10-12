@@ -1,0 +1,1 @@
+from staticflatpages.tests.tests import StaticFlatpageTests
