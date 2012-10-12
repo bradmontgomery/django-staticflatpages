@@ -4,11 +4,11 @@ from staticflatpages import __version__
 setup(
     name='django-staticflatpages',
     version=__version__,
-    description="django-staticflatpages is flatpages, but with templates."
+    description="django-staticflatpages is like flatpages, but with templates."
     long_description=open('README.rst').read(),
     author='Brad Montgomery',
     author_email='brad@bradmontgomery.net',
-    url='https://github.com/bradmontgomery/django-staticflatpages/',
+    url='https://github.com/bradmontgomery/django-staticflatpages',
     license='MIT',
     packages=['staticflatpages'],
     include_package_data=True,
