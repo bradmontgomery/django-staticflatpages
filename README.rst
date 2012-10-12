@@ -1,10 +1,10 @@
 django-staticflatpages
 ======================
 
-**like flatpages, but with templates**
+*like flatpages, but with templates*
 
 This is like Django's ``contrib.flatpages``, but without the database. It's
-just static html documents on your filesystem.
+just static html documents served from your filesystem.
 
 Motivation
 ----------
@@ -19,7 +19,6 @@ Why not just serve these from my templates directory?
 
 That's what ``staticflatpages`` does.
 
-
 Installation
 ------------
 
@@ -27,23 +26,29 @@ Install this app with pip:
 
 ``pip install django-staticflatpages``
 
-Then add ``staticflatpages`` to your ``INSTALLED_APPS``.
+Or install it directly from this repo:
+
+``pip install -e git+git://github.com/bradmontgomery/django-staticflatpages.git#egg=django-staticflatpages``
 
 Configuration
 -------------
 
-Create a ``staticflatpages`` template directory. This should be a subdirectory
-of one of the templates in your ``TEMPLATE_DIRS``. Then, any templates you
-include will get served as a static document.
+1. Add ``staticflatpages`` to your ``INSTALLED_APPS``.
+2. Add ``staticflatpages.middleware.StaticFlatpageFallbackMiddleware`` to your
+   ``MIDDLEWARE_CLASSES``
+3. Create a ``staticflatpages`` template directory. This should be a
+   subdirectory of one of the templates in your ``TEMPLATE_DIRS``. Any
+   templates you include here (except for a ``base.html``) will get served as
+   a static page.
 
-Assuming your project-level template directory is named "templates", the url
-``/about/`` will point to ``templates/staticflatpages/about.html``.
-Likewise, the url ``/about/team/`` will point to
-``templates/staticflatpages/about/team.html``.
-
+For example, assuming your project-level template directory is named
+"templates", the url ``/about/`` will point to
+``templates/staticflatpages/about.html``. Likewise, the url ``/about/team/``
+will point to ``templates/staticflatpages/about/team.html``.
 
 License
 -------
 
 This code is distributed under the terms of the MIT license. See the
 ``LICENSE`` file.
+
