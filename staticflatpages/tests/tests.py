@@ -32,3 +32,9 @@ class StaticFlatpageTests(TestCase):
         """A non-existent staticflatpage raises a 404."""
         response = self.client.get('/no_such_page/')
         self.assertEqual(response.status_code, 404)
+
+    def test_csrftoken_in_staticflatpage(self):
+        """A non-existent staticflatpage raises a 404."""
+        response = self.client.get('/some_form/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "csrfmiddlewaretoken")

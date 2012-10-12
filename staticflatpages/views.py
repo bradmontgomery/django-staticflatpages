@@ -15,11 +15,16 @@ def staticflatpage(request, path):
         path = "/{0}".format(path)
     if path.endswith('/'):
         path = path[:-1]
-    
+
     # paths should be in the format: staticflatpages/path/from/url.html
     path = "staticflatpages{0}.html".format(path)
     try:
-        return render_to_response(path, {},
-            context_instance=RequestContext(request))
+        return render(request, path)
     except TemplateDoesNotExist:
         raise Http404
+
+
+@csrf_protect
+def render(request, path):
+    return render_to_response(path, {},
+        context_instance=RequestContext(request))
