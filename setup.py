@@ -4,7 +4,7 @@ from staticflatpages import __version__
 setup(
     name='django-staticflatpages',
     version=__version__,
-    description="django-staticflatpages is like flatpages, but with templates."
+    description="like flatpages, but with templates.",
     long_description=open('README.rst').read(),
     author='Brad Montgomery',
     author_email='brad@bradmontgomery.net',
@@ -12,7 +12,7 @@ setup(
     license='MIT',
     packages=['staticflatpages'],
     include_package_data=True,
-    package_data = { '': ['README.rst'] },
+    package_data={'': ['README.rst']},
     zip_safe=False,
     install_requires=['django'],
     classifiers=[
