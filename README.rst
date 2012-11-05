@@ -46,6 +46,33 @@ For example, assuming your project-level template directory is named
 ``templates/staticflatpages/about.html``. Likewise, the url ``/about/team/``
 will point to ``templates/staticflatpages/about/team.html``.
 
+
+Sitemaps
+--------
+This app also supports sitemaps. To enable these just set up a sitemap (e.g. in
+your Root URLconf)::
+
+    from staticflatpages.sitemaps import StaticFlatpageSitemap
+
+    sitemaps = {
+        'staticflatpages': StaticFlatpageSitemap,
+    }
+
+Then include your sitemaps urls as normal::
+
+    urlpatterns += patterns('django.contrib.sitemaps.views',
+        url(r'^sitemap\.xml$', 'index', {'sitemaps': sitemaps}),
+        url(r'^sitemap-(?P<section>.+)\.xml$', 'sitemap', {'sitemaps': sitemaps}),
+    )
+
+You may also want to include the following settings:
+
+* ``STATICFLATPAGES_CHANGEFREQ``: Corresponds to the ``Sitemap.changefreq``
+  attribute (defaults to ``never``).
+* ``STATICFLATPAGES_PRIORITY``: Corresponds to the ``Sitemap.priority``
+  attribute (defaults to 0.5).
+
+
 License
 -------
 
