@@ -49,8 +49,9 @@ will point to ``templates/staticflatpages/about/team.html``.
 
 Sitemaps
 --------
-This app also supports sitemaps. To enable these just set up a sitemap (e.g. in
-your Root URLconf)::
+This app also supports sitemaps for staticflatpages. To enable these, you'll
+need to have ``django.contrib.sitemaps`` listed in your INSTALLED_APPS. Then,
+just set up a sitemap (e.g. in your Root URLconf)::
 
     from staticflatpages.sitemaps import StaticFlatpageSitemap
 
@@ -62,10 +63,18 @@ Then include your sitemaps urls as normal::
 
     urlpatterns += patterns('django.contrib.sitemaps.views',
         url(r'^sitemap\.xml$', 'index', {'sitemaps': sitemaps}),
-        url(r'^sitemap-(?P<section>.+)\.xml$', 'sitemap', {'sitemaps': sitemaps}),
+        url(r'^sitemap-(?P<section>.+)\.xml$',
+            'sitemap',
+            {'sitemaps': sitemaps}
+        ),
     )
 
-You may also want to include the following settings:
+
+Settings
+--------
+
+If you use the sitemaps feature, you may also want to include the following
+settings:
 
 * ``STATICFLATPAGES_CHANGEFREQ``: Corresponds to the ``Sitemap.changefreq``
   attribute (defaults to ``never``).
