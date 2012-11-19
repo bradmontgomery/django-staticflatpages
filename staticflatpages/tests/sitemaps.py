@@ -36,8 +36,8 @@ class StaticFlatpageSitemapTest(TestCase):
                 "staticflatpages app not installed.")
     def test_sitemap(self):
         """Basic StaticFlatPage sitemap test"""
-
-        response = self.client.get('/sitemap.xml')
+        url = reverse('sitemap')  # default sitemap
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
         loc = '<loc>{0}{1}</loc>'.format(

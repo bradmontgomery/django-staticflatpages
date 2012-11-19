@@ -6,6 +6,7 @@ from staticflatpages import util
 
 
 class StaticFlatpageTests(TestCase):
+    urls = 'staticflatpages.tests.urls'
 
     def setUp(self):
         self.old_MIDDLEWARE_CLASSES = settings.MIDDLEWARE_CLASSES
@@ -43,6 +44,8 @@ class StaticFlatpageTests(TestCase):
 
 
 class StaticFlatpageUtilTests(TestCase):
+    urls = 'staticflatpages.tests.urls'
+
     def setUp(self):
         self.TEMPLATE_DIRS = (
             os.path.join(
@@ -50,7 +53,7 @@ class StaticFlatpageUtilTests(TestCase):
                 'templates'
             ),
         )
-    
+
     def test__format_as_url(self):
         """Make sure a list of paths are formatted as absolute URLs."""
         input_urls = ['foo', '/bar', 'baz/', 'wooo/boy', 'yippe/kai/aye']
