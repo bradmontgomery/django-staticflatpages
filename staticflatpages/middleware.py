@@ -1,6 +1,7 @@
-from views import staticflatpage
 from django.http import Http404
 from django.conf import settings
+
+from .views import staticflatpage
 
 
 class StaticFlatpageFallbackMiddleware(object):
