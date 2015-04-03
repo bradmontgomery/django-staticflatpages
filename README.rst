@@ -1,6 +1,8 @@
 django-staticflatpages
 ======================
 
+|version| |license|
+
 *like flatpages, but with templates*
 
 This is like Django's ``contrib.flatpages``, but without the database. It's
@@ -88,3 +90,11 @@ License
 This code is distributed under the terms of the MIT license. See the
 ``LICENSE`` file.
 
+
+.. |version| image:: http://img.shields.io/pypi/v/django-staticflatpages.svg?style=flat-square
+    :alt: Current Release
+    :target: https://pypi.python.org/pypi/django-staticflatpages/
+
+.. |license| image:: http://img.shields.io/pypi/l/django-staticflatpages.svg?style=flat-square
+    :alt: License
+    :target: https://pypi.python.org/pypi/django-staticflatpages/
