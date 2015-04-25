@@ -8,22 +8,30 @@ from staticflatpages import util
 class StaticFlatpageTests(TestCase):
     urls = 'staticflatpages.tests.urls'
 
+    def _test_template_dir(self):
+        return os.path.join(os.path.dirname(__file__), 'templates')
+
     def setUp(self):
         self.old_MIDDLEWARE_CLASSES = settings.MIDDLEWARE_CLASSES
         m = 'staticflatpages.middleware.StaticFlatpageFallbackMiddleware'
         if m not in settings.MIDDLEWARE_CLASSES:
             settings.MIDDLEWARE_CLASSES += (m)
-        self.old_TEMPLATE_DIRS = settings.TEMPLATE_DIRS
-        settings.TEMPLATE_DIRS = (
-            os.path.join(
-                os.path.dirname(__file__),
-                'templates'
-            ),
-        )
+
+        # Check for new-style template settings.
+        if hasattr(settings, 'TEMPLATES'):
+            for template_settings in settings.TEMPLATES:
+                template_settings['DIRS'].append(self._test_template_dir())
+        else:
+            self.old_TEMPLATE_DIRS = settings.TEMPLATE_DIRS
+            settings.TEMPLATE_DIRS = (self._test_template_dir(), )
 
     def tearDown(self):
         settings.MIDDLEWARE_CLASSES = self.old_MIDDLEWARE_CLASSES
-        settings.TEMPLATE_DIRS = self.old_TEMPLATE_DIRS
+        if hasattr(settings, 'TEMPLATES'):
+            for template_settings in settings.TEMPLATES:
+                template_settings['DIRS'].remove(self._test_template_dir())
+        else:
+            settings.TEMPLATE_DIRS = self.old_TEMPLATE_DIRS
 
     def test_staticflatpage(self):
         """A staticflatpage will be served by the fallback middleware"""
@@ -37,7 +45,7 @@ class StaticFlatpageTests(TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_csrftoken_in_staticflatpage(self):
-        """A non-existent staticflatpage raises a 404."""
+        """You should be able to include a CSRF token in a template."""
         response = self.client.get('/some_form/')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "csrfmiddlewaretoken")
