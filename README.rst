@@ -24,13 +24,10 @@ That's what ``staticflatpages`` does.
 Installation
 ------------
 
-Install this app with pip:
+Install the latest release with pip:
 
 ``pip install django-staticflatpages``
 
-Or install it directly from this repo:
-
-``pip install -e git+git://github.com/bradmontgomery/django-staticflatpages.git#egg=django-staticflatpages``
 
 Configuration
 -------------
@@ -44,9 +41,10 @@ Configuration
    a static page.
 
 For example, assuming your project-level template directory is named
-"templates", the url ``/about/`` will point to
-``templates/staticflatpages/about.html``. Likewise, the url ``/about/team/``
-will point to ``templates/staticflatpages/about/team.html``.
+"templates", then:
+
+* The url ``/about/`` will render ``templates/staticflatpages/about.html``
+* The url ``/about/team/`` will render ``templates/staticflatpages/about/team.html``
 
 
 Sitemaps
