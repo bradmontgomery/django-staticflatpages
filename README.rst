@@ -69,6 +69,10 @@ Then include your sitemaps urls as normal::
         ),
     )
 
+*NOTE*: The sitemaps framework also requires the
+`sites framework <https://docs.djangoproject.com/en/1.8/ref/contrib/sites/#module-django.contrib.sites>`_,
+so you'll need that in INSTALLED_APPS, and you'll also need to define a ``SITE_ID``.
+
 
 Settings
 --------
