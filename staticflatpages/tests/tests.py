@@ -61,6 +61,17 @@ class StaticFlatpageUtilTests(TestCase):
                 'templates'
             ),
         )
+        if hasattr(settings, 'TEMPLATES'):
+            self._original_templates = settings.TEMPLATES
+        if hasattr(settings, 'TEMPLATE_DIRS'):
+            self._original_template_dirs = settings.TEMPLATE_DIRS
+
+    def tearDown(self):
+        """replace altered settings."""
+        if hasattr(self, '_original_templates'):
+            settings.TEMPLATES = self._original_templates
+        if hasattr(self, '_original_template_dirs'):
+            settings.TEMPLATE_DIRS = self._original_template_dirs
 
     def test__format_as_url(self):
         """Make sure a list of paths are formatted as absolute URLs."""
@@ -83,3 +94,28 @@ class StaticFlatpageUtilTests(TestCase):
         self.assertIn("/about/foo/", urls)
         self.assertIn("/about/bar/", urls)
         self.assertIn("/about/bar/baz/", urls)
+
+    def test_get_template_directories_with_template_dirs(self):
+        """Should return the value of TEMPLATE_DIRS if it exists and is not empty"""
+        settings.TEMPLATE_DIRS = ['templates']
+        self.assertEqual(util.get_template_directories(), {'templates'})
+
+    def test_get_template_directories_with_empty_template_dirs(self):
+        """Should return an empty set if TEMPLATE_DIRS is empty, but TEMPLATES
+        is not defined"""
+        if hasattr(settings, 'TEMPLATES'):
+            del settings.TEMPLATES
+        self.TEMPLATE_DIRS = ()
+        settings.TEMPLATE_DIRS = ()
+        self.assertEqual(util.get_template_directories(), set())
+
+    def test_get_template_directories_with_templates(self):
+        """Should return a set of DIRS from TEMPLATES if those are defined."""
+        self.TEMPLATE_DIRS = ()
+        if hasattr(settings, 'TEMPLATE_DIRS'):
+            del settings.TEMPLATE_DIRS
+        settings.TEMPLATES = [{
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            'DIRS': ["other_templates"],
+        }]
+        self.assertEqual(util.get_template_directories(), {'other_templates'})
