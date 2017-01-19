@@ -1,8 +1,6 @@
-from django.template import RequestContext
 from django.template.loader import TemplateDoesNotExist
 from django.http import Http404
-from django.views.decorators.csrf import csrf_protect
-from django.shortcuts import render_to_response
+from django.shortcuts import render
 
 
 def staticflatpage(request, path):
@@ -23,8 +21,3 @@ def staticflatpage(request, path):
     except TemplateDoesNotExist:
         raise Http404
 
-
-@csrf_protect
-def render(request, path):
-    return render_to_response(path, {},
-        context_instance=RequestContext(request))
