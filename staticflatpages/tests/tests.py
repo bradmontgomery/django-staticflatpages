@@ -13,7 +13,7 @@ class StaticFlatpageTests(TestCase):
 
     def setUp(self):
         self.old_MIDDLEWARE_CLASSES = settings.MIDDLEWARE_CLASSES
-        m = 'staticflatpages.middleware.StaticFlatpageFallbackMiddleware'
+        m = ('staticflatpages.middleware.StaticFlatpageFallbackMiddleware', )
         if m not in settings.MIDDLEWARE_CLASSES:
             settings.MIDDLEWARE_CLASSES += (m)
 
