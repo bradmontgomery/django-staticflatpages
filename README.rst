@@ -32,9 +32,11 @@ Install the latest release with pip:
 Compatibility
 -------------
 
-This app should work with Django 1.4 - 1.8 with either Python 2.7 or Python 3.4.
-Run the test suite with ``python manage.py test staticflatpages``, and open an
-Issue if you run into any problems.
+This app works with Django 1.8+ (but _may_ work with earlier versions of Django)
+with either Python 2.7 or Python 3.4. Run the test suite with
+``python manage.py test staticflatpages``, and open an
+`Issue on Github <https://github.com/bradmontgomery/django-staticflatpages/issues>`_
+if you run into any problems.
 
 
 Configuration
