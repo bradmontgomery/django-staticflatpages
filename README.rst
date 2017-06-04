@@ -32,8 +32,8 @@ Install the latest release with pip:
 Compatibility
 -------------
 
-This app works with Django 1.8+ (but _may_ work with earlier versions of Django)
-with either Python 2.7 or Python 3.4. Run the test suite with
+This app works with Django 1.10+ (grab a previous release for older versions
+of Django). and Python 3.5-3.6. You can run the test suite with
 ``python manage.py test staticflatpages``, and open an
 `Issue on Github <https://github.com/bradmontgomery/django-staticflatpages/issues>`_
 if you run into any problems.
@@ -44,9 +44,9 @@ Configuration
 
 1. Add ``staticflatpages`` to your ``INSTALLED_APPS``.
 2. Add ``staticflatpages.middleware.StaticFlatpageFallbackMiddleware`` to your
-   ``MIDDLEWARE_CLASSES``
+   ``MIDDLEWARE`` settings.
 3. Create a ``staticflatpages`` template directory. This should be a
-   subdirectory of one of the templates in your ``TEMPLATE_DIRS``. Any
+   subdirectory of one of the templates in your ``TEMPLATES`` setting. Any
    templates you include here (except for a ``base.html``) will get served as
    a static page.
 
