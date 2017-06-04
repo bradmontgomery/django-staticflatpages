@@ -7,7 +7,7 @@ from django.conf import settings
 
 def get_template_directories():
     """This function tries to figure out where template directories are located.
-    It first inspects the TEMPLATE_DIRS setting, and if that exists and is not
+    It first inspects the TEMPLATES setting, and if that exists and is not
     empty, uses its values.
 
     Otherwise, the values from all of the defined DIRS within TEMPLATES are used.
@@ -16,11 +16,8 @@ def get_template_directories():
 
     """
     templates = set()
-    if hasattr(settings, 'TEMPLATE_DIRS') and len(settings.TEMPLATE_DIRS) > 0:
-        templates = set(settings.TEMPLATE_DIRS)
-    elif hasattr(settings, 'TEMPLATES'):
-        for t in settings.TEMPLATES:
-            templates = templates.union(set(t.get('DIRS', [])))
+    for t in settings.TEMPLATES:
+        templates = templates.union(set(t.get('DIRS', [])))
     return templates
 
 
