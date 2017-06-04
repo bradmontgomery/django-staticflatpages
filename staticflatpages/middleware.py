@@ -1,10 +1,11 @@
 from django.http import Http404
 from django.conf import settings
+from django.utils.deprecation import MiddlewareMixin
 
 from .views import staticflatpage
 
 
-class StaticFlatpageFallbackMiddleware(object):
+class StaticFlatpageFallbackMiddleware(MiddlewareMixin, object):
     def process_response(self, request, response):
         # Only check if there's a 404 for the original response
         if response.status_code != 404:
