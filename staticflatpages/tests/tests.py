@@ -1,37 +1,38 @@
 import os
 from django.conf import settings
-from django.test import TestCase
+from django.test import TestCase, modify_settings, override_settings
 
 from staticflatpages import util
 
 
+def _test_template_dir():
+    return os.path.join(os.path.dirname(__file__), 'templates')
+
+
+# Test values for settings.TEMPATES
+TEST_TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [_test_template_dir()],
+        'APP_DIRS': True,  # required for sitemaps
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+
+@override_settings(TEMPLATES=TEST_TEMPLATES)
+@modify_settings(MIDDELWARE={
+    'append': 'staticflatpages.middleware.StaticFlatpageFallbackMiddleware'
+})
 class StaticFlatpageTests(TestCase):
     urls = 'staticflatpages.tests.urls'
-
-    def _test_template_dir(self):
-        return os.path.join(os.path.dirname(__file__), 'templates')
-
-    def setUp(self):
-        self.old_MIDDLEWARE_CLASSES = settings.MIDDLEWARE_CLASSES
-        m = ('staticflatpages.middleware.StaticFlatpageFallbackMiddleware', )
-        if m not in settings.MIDDLEWARE_CLASSES:
-            settings.MIDDLEWARE_CLASSES += (m)
-
-        # Check for new-style template settings.
-        if hasattr(settings, 'TEMPLATES'):
-            for template_settings in settings.TEMPLATES:
-                template_settings['DIRS'].append(self._test_template_dir())
-        else:
-            self.old_TEMPLATE_DIRS = settings.TEMPLATE_DIRS
-            settings.TEMPLATE_DIRS = (self._test_template_dir(), )
-
-    def tearDown(self):
-        settings.MIDDLEWARE_CLASSES = self.old_MIDDLEWARE_CLASSES
-        if hasattr(settings, 'TEMPLATES'):
-            for template_settings in settings.TEMPLATES:
-                template_settings['DIRS'].remove(self._test_template_dir())
-        else:
-            settings.TEMPLATE_DIRS = self.old_TEMPLATE_DIRS
 
     def test_staticflatpage(self):
         """A staticflatpage will be served by the fallback middleware"""
@@ -51,27 +52,11 @@ class StaticFlatpageTests(TestCase):
         self.assertContains(response, "csrfmiddlewaretoken")
 
 
+@override_settings(TEMPLATES=TEST_TEMPLATES)
+@modify_settings(MIDDELWARE={
+    'append': 'staticflatpages.middleware.StaticFlatpageFallbackMiddleware'
+})
 class StaticFlatpageUtilTests(TestCase):
-    urls = 'staticflatpages.tests.urls'
-
-    def setUp(self):
-        self.TEMPLATE_DIRS = (
-            os.path.join(
-                os.path.dirname(__file__),
-                'templates'
-            ),
-        )
-        if hasattr(settings, 'TEMPLATES'):
-            self._original_templates = settings.TEMPLATES
-        if hasattr(settings, 'TEMPLATE_DIRS'):
-            self._original_template_dirs = settings.TEMPLATE_DIRS
-
-    def tearDown(self):
-        """replace altered settings."""
-        if hasattr(self, '_original_templates'):
-            settings.TEMPLATES = self._original_templates
-        if hasattr(self, '_original_template_dirs'):
-            settings.TEMPLATE_DIRS = self._original_template_dirs
 
     def test__format_as_url(self):
         """Make sure a list of paths are formatted as absolute URLs."""
@@ -87,35 +72,33 @@ class StaticFlatpageUtilTests(TestCase):
 
     def test_urls_from_file_tree(self):
         urls = []
-        for directory in self.TEMPLATE_DIRS:
-            urls += util.urls_from_file_tree(directory)
+        for template_config in settings.TEMPLATES:
+            for directory in template_config['DIRS']:
+                urls += util.urls_from_file_tree(directory)
         self.assertIn("/default/", urls)
         self.assertIn("/some_form/", urls)
         self.assertIn("/about/foo/", urls)
         self.assertIn("/about/bar/", urls)
         self.assertIn("/about/bar/baz/", urls)
 
+    @override_settings(TEMPLATES=[{
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ["templates"],
+    }])
     def test_get_template_directories_with_template_dirs(self):
-        """Should return the value of TEMPLATE_DIRS if it exists and is not empty"""
-        settings.TEMPLATE_DIRS = ['templates']
+        """Should return the value of TEMPLATES if it exists and is not empty"""
         self.assertEqual(util.get_template_directories(), {'templates'})
 
+    @override_settings(TEMPLATES=[])
     def test_get_template_directories_with_empty_template_dirs(self):
-        """Should return an empty set if TEMPLATE_DIRS is empty, but TEMPLATES
+        """Should return an empty set if TEMPLATES is empty, but TEMPLATES
         is not defined"""
-        if hasattr(settings, 'TEMPLATES'):
-            del settings.TEMPLATES
-        self.TEMPLATE_DIRS = ()
-        settings.TEMPLATE_DIRS = ()
         self.assertEqual(util.get_template_directories(), set())
 
+    @override_settings(TEMPLATES=[{
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': ["other_templates"],
+    }])
     def test_get_template_directories_with_templates(self):
         """Should return a set of DIRS from TEMPLATES if those are defined."""
-        self.TEMPLATE_DIRS = ()
-        if hasattr(settings, 'TEMPLATE_DIRS'):
-            del settings.TEMPLATE_DIRS
-        settings.TEMPLATES = [{
-            'BACKEND': 'django.template.backends.django.DjangoTemplates',
-            'DIRS': ["other_templates"],
-        }]
         self.assertEqual(util.get_template_directories(), {'other_templates'})

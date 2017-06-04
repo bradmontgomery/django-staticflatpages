@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
 from django.test import TestCase
-from django.utils.unittest import skipUnless
+from django.test.utils import skipUnless
 
 
 class StaticFlatpageSitemapTest(TestCase):
