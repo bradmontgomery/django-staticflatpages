@@ -33,7 +33,7 @@ Compatibility
 -------------
 
 This app works with Django 1.10+ (grab a previous release for older versions
-of Django). and Python 3.5-3.6. You can run the test suite with
+of Django), and Python 3.5-3.6. You can run the test suite with
 ``python manage.py test staticflatpages``, and open an
 `Issue on Github <https://github.com/bradmontgomery/django-staticflatpages/issues>`_
 if you run into any problems.
@@ -59,6 +59,7 @@ For example, assuming your project-level template directory is named
 
 Sitemaps
 --------
+
 This app also supports sitemaps for staticflatpages. To enable these, you'll
 need to have ``django.contrib.sitemaps`` listed in your INSTALLED_APPS. Then,
 just set up a sitemap (e.g. in your Root URLconf)::
@@ -95,6 +96,12 @@ settings:
 * ``STATICFLATPAGES_PRIORITY``: Corresponds to the ``Sitemap.priority``
   attribute (defaults to 0.5).
 
+
+Misc
+----
+
+This app could work with with `django-dirtyedit <https://github.com/synw/django-dirtyedit>`_,
+which allows you to edit files from the admin (if you're so inclined).
 
 License
 -------
