@@ -32,8 +32,8 @@ Install the latest release with pip:
 Compatibility
 -------------
 
-This app works with Django 1.10+ (grab a previous release for older versions
-of Django), and Python 3.5-3.6. You can run the test suite with
+This app works with Django 1.11 - 2.1 (grab a previous release for older versions
+of Django), and Python 3.6. You can run the test suite with
 ``python manage.py test staticflatpages``, and open an
 `Issue on Github <https://github.com/bradmontgomery/django-staticflatpages/issues>`_
 if you run into any problems.
