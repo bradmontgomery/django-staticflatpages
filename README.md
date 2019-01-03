@@ -55,6 +55,8 @@ For example, assuming your project-level template directory is named
 
 * The url `/about/` will render `templates/staticflatpages/about.html`
 * The url `/about/team/` will render `templates/staticflatpages/about/team.html`
+* If you include an index template (`templates/staticflatpages/index.html`), and
+  no other url maps to `/`, it will get used as your index.
 
 
 ## Sitemaps
