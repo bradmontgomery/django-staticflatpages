@@ -14,10 +14,13 @@ def staticflatpage(request, path):
     if path.endswith('/'):
         path = path[:-1]
 
+    # Support for index.html templates.
+    if path == '':
+        path = "/index"
+
     # paths should be in the format: staticflatpages/path/from/url.html
     path = "staticflatpages{0}.html".format(path)
     try:
         return render(request, path)
     except TemplateDoesNotExist:
         raise Http404
-
