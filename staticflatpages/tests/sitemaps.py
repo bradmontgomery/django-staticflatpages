@@ -29,13 +29,13 @@ class StaticFlatpageSitemapTest(TestCase):
                 "staticflatpages app not installed.")
     def test_sitemap(self):
         """Basic StaticFlatPage sitemap test"""
-        url = reverse('test-sitemap-index')  # default sitemap
+        url = reverse('django.contrib.sitemaps.views.sitemap')
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
         loc = '<loc>{0}{1}</loc>'.format(
             self.base_url,
-            reverse('test-sitemap-section', args=['staticflatpages'])
+            reverse('django.contrib.sitemaps.views.sitemap', args=['staticflatpages'])
         )
         self.assertContains(response, loc)
 
@@ -43,7 +43,7 @@ class StaticFlatpageSitemapTest(TestCase):
                 "staticflatpages app not installed.")
     def test_sitemap_staticflatpages(self):
         """Test that sitesmaps exist for installed staticflatpges"""
-        url = reverse('test-sitemap-section', args=['staticflatpages'])
+        url = reverse('django.contrib.sitemaps.views.sitemap', args=['staticflatpages'])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 

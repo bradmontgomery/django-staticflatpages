@@ -1,6 +1,5 @@
-from django.conf.urls import url
+from django.urls import include, path
 from django.contrib.sitemaps import views
-
 from staticflatpages.sitemaps import StaticFlatpageSitemap
 
 
@@ -10,16 +9,17 @@ sitemaps = {
 
 
 urlpatterns = [
-    url(
-        r'^sitemap\.xml$',
-        views.index,
-        {'sitemaps': sitemaps},
-        name="test-sitemap-index"
-    ),
-    url(
-        r'^sitemap-(?P<section>.+)\.xml$',
+    path(
+        'sitemap-<section>.xml',
         views.sitemap,
         {'sitemaps': sitemaps},
-        name="test-sitemap-section"
+        name='django.contrib.sitemaps.views.sitemap'
     ),
+    path(
+        'sitemap.xml',
+        views.index,
+        {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap'
+    ),
+
 ]
